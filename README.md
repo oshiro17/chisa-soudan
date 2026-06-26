@@ -18,7 +18,7 @@
 - 各ページの title・description・canonical・OGP は記入済み。記事を足したら sitemap.xml に追記。
 
 ## 公開前にやること（重要）
-1. **ドメイン/公開URLを決める**。全ファイルの `https://oshiro17.github.io/chisa-soudan` を実URLへ一括置換：
+1. **ドメイン/公開URLを決める**。全ファイルの `https://soudan.lovesupport-advisor.com` を実URLへ一括置換：
    - `index.html`（canonical / og:url）、各 `articles/*.html`（canonical）、`sitemap.xml`、`robots.txt`
 2. **OGP画像**を用意して `og:image` を追加すると、SNSシェアの見栄えが上がる。
 3. 公開後、**Google Search Console** にサイト登録＋ sitemap.xml を送信（インデックス促進）。
