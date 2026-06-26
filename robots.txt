@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://oshiro17.github.io/chisa-soudan/sitemap.xml
