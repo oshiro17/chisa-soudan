@@ -38,6 +38,8 @@
   </div>
 </header>
 
+<div id="statusbar" class="statusbar"><span id="statustext"></span></div>
+
 <main>
   <!-- HERO -->
   <section class="hero">
@@ -199,5 +201,24 @@
   </div>
 </footer>
 <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script>
+/* 対応状況バー：Apps ScriptのWebアプリURLを入れると表示されます（未設定なら非表示） */
+window.STATUS_API = "PUT_STATUS_WEBAPP_EXEC_URL";
+(function(){
+  var bar=document.getElementById('statusbar');
+  var MAP={
+    available:{c:'statusbar--ok',  t:'🟢 今すぐ電話対応OK ／ ご購入後、すぐにお電話できます'},
+    busy:     {c:'statusbar--busy',t:'🔴 ただいま対応中 ／ ご購入後、順番にお電話します（少しお待ちいただく場合があります）'},
+    away:     {c:'statusbar--away',t:'⚪ ただいま離席中 ／ ご購入後、ご希望日時で調整してお電話します'}
+  };
+  function show(s){var m=MAP[s]||MAP.away;bar.className='statusbar '+m.c;document.getElementById('statustext').textContent=m.t;bar.style.display='block';}
+  if(!window.STATUS_API || window.STATUS_API.indexOf('PUT_')===0) return; // 未設定なら非表示
+  window.__onStatus=function(d){show(d&&d.status);};
+  var s=document.createElement('script');
+  s.src=window.STATUS_API+(window.STATUS_API.indexOf('?')<0?'?':'&')+'callback=__onStatus';
+  s.onerror=function(){/* 取得失敗時はバー非表示のまま */};
+  document.body.appendChild(s);
+})();
+</script>
 </body>
 </html>
