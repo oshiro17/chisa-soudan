@@ -38,7 +38,7 @@
   </div>
 </header>
 
-<div id="statusbar" class="statusbar"><span id="statustext"></span></div>
+<div id="statusbar" class="statusbar"><span class="live-dot"></span><span id="statustext"></span><span id="statustime" class="statusbar__time"></span><span id="statuscta"></span></div>
 
 <main>
   <!-- HERO -->
@@ -207,11 +207,20 @@ window.STATUS_API = "https://script.google.com/macros/s/AKfycbx4BZ5ZW0OHZ5NgfTcp
 (function(){
   var bar=document.getElementById('statusbar');
   var MAP={
-    available:{c:'statusbar--ok',  t:'🟢 今すぐ電話対応OK ／ ご購入後、すぐにお電話できます'},
-    busy:     {c:'statusbar--busy',t:'🔴 ただいま対応中 ／ ご購入後、順番にお電話します（少しお待ちいただく場合があります）'},
-    away:     {c:'statusbar--away',t:'⚪ ただいま離席中 ／ ご購入後、ご希望日時で調整してお電話します'}
+    available:{c:'statusbar--ok',  t:'<b>ちさ・ただいまオンライン</b>｜いま電話がつながります'},
+    busy:     {c:'statusbar--busy',t:'ちさ・ただいま対応中｜ご購入後、順番にご案内します'},
+    away:     {c:'statusbar--away',t:'ちさ・ただいま席を外しています｜ご購入後、ご希望日時で調整します'}
   };
-  function show(s){var m=MAP[s]||MAP.away;bar.className='statusbar '+m.c;document.getElementById('statustext').textContent=m.t;bar.style.display='block';}
+  function pad(n){return('0'+n).slice(-2);}
+  function show(s){
+    var m=MAP[s]||MAP.away;
+    bar.className='statusbar '+m.c;
+    document.getElementById('statustext').innerHTML=m.t;
+    var d=new Date();
+    document.getElementById('statustime').textContent='（'+(d.getMonth()+1)+'月'+d.getDate()+'日 '+pad(d.getHours())+':'+pad(d.getMinutes())+' 現在）';
+    document.getElementById('statuscta').innerHTML=(s==='available')?'<a class="statusbar__cta" href="#plan">今すぐ予約 →</a>':'';
+    bar.style.display='block';
+  }
   if(!window.STATUS_API || window.STATUS_API.indexOf('PUT_')===0) return; // 未設定なら非表示
   window.__onStatus=function(d){show(d&&d.status);};
   var s=document.createElement('script');
